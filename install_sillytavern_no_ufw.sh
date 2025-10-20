@@ -84,9 +84,13 @@ else
 fi
 
 # Теперь nvm точно должен быть доступен
+
+# Временно отключаем 'nounset' (set -u) для команд nvm, которые могут быть чувствительны
+set +u
 nvm install --lts # Установка последней LTS-версии Node.js
 nvm use --lts     # Использование последней LTS-версии
 nvm alias default lts/* # Установка LTS-версии по умолчанию
+set -u # Включаем 'nounset' обратно для остальной части скрипта
 
 echo -e "\n--- Установка Caddy ---"
 sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
