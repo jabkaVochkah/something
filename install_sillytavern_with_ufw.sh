@@ -10,7 +10,7 @@ export LC_ALL=C
 
 # --- НАСТРАИВАЕМЫЕ ПЕРЕМЕННЫЕ ---
 # URL вашего преднастроенного config.yaml для SillyTavern
-USER_CONFIG_YAML_URL="https://raw.githubusercontent.com/ВАШ_ПОЛЬЗОВАТЕЛЬ/ВАШ_РЕПО/main/sillytavern_config.yaml"
+USER_CONFIG_YAML_URL="https://raw.githubusercontent.com/jabkaVochkah/something/refs/heads/main/config.yaml"
 # ---------------------------------
 
 echo -e "\n--- Важно: Скрипт должен быть запущен с правами root. ---"
