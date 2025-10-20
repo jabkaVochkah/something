@@ -3,7 +3,7 @@
 # Скрипт для автоматической установки SillyTavern с Caddy и UFW на Ubuntu 24.04.
 # Подходит для серверов, где НЕТ других решений для фаервола (например, скрипта VPN).
 #
-# Использование: sudo bash <(wget -qO- https://raw.githubusercontent.com/ВАШ_ПОЛЬЗОВАТЕЛЬ/ВАШ_РЕПО/main/install_sillytavern_with_ufw.sh)
+# Использование: sudo bash <(wget -qO- https://raw.githubusercontent.com/jabkaVochkah/something/main/install_sillytavern_with_ufw.sh)
 #
 set -euo pipefail # Выход при ошибке, undef var, failure in pipe
 export LC_ALL=C
