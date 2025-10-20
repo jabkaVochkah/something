@@ -21,16 +21,21 @@ if [[ "$EUID" -ne 0 ]]; then
 fi
 
 CADDY_DOMAIN=""
-while true; do
-  read -rp "Введите субдомен (например, client1.sillytavern.help) для SillyTavern (ОБЯЗАТЕЛЬНО должен быть настроен в Cloudflare): " CADDY_DOMAIN
-  if [[ -z "$CADDY_DOMAIN" ]]; then
-    echo "Субдомен не может быть пустым. Пожалуйста, введите его."
-  elif [[ ! "$CADDY_DOMAIN" =~ ^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
-    echo "Некорректный формат субдомена. Введите полный домен, например, example.com"
-  else
-    break
-  fi
-done
+if [ -n "$1" ]; then # Проверяем, был ли передан аргумент
+    CADDY_DOMAIN="$1"
+    echo "Используем субдомен из аргументов: $CADDY_DOMAIN"
+else # Если аргумент не передан, запрашиваем интерактивно
+    while true; do
+        read -rp "Введите субдомен (например, client1.sillytavern.help) для SillyTavern (ОБЯЗАТЕЛЬНО должен быть настроен в Cloudflare): " CADDY_DOMAIN
+        if [[ -z "$CADDY_DOMAIN" ]]; then
+            echo "Субдомен не может быть пустым. Пожалуйста, введите его."
+        elif [[ ! "$CADDY_DOMAIN" =~ ^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
+            echo "Некорректный формат субдомена. Введите полный домен, например, example.com"
+        else
+            break
+        fi
+    done
+fi
 
 echo -e "\n--- Проверка и обновление системы ---"
 apt update
