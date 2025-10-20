@@ -49,23 +49,41 @@ apt upgrade -y
 apt install -y curl git nano
 
 echo -e "\n--- Установка NVM и Node.js ---"
-# Проверка, установлен ли NVM. Если нет, устанавливаем.
-if [ -z "$NVM_DIR" ]; then
-    export NVM_DIR="$HOME/.nvm"
-    if [ -s "$NVM_DIR/nvm.sh" ]; then
-        . "$NVM_DIR/nvm.sh"
+
+# Определяем NVM_DIR, если он еще не определен (что вероятно для root в скрипте)
+export NVM_DIR="$HOME/.nvm"
+
+# Загружаем NVM, если он установлен
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+    echo "NVM уже установлен, загружаем..."
+    \. "$NVM_DIR/nvm.sh" # This loads nvm
+    # Проверяем, что nvm теперь доступен
+    if ! command -v nvm &> /dev/null; then
+        echo "Ошибка: NVM не загрузился корректно, перезапускаем оболочку."
+        # Если NVM все равно не доступен, это серьезная проблема,
+        # тогда нужно перепробовать установку nvm
+        # Для простоты скрипта, если nvm не загрузился, мы будем считать его не установленным.
     fi
 fi
+
+# Устанавливаем NVM, если он не был установлен или не загрузился корректно
 if ! command -v nvm &> /dev/null; then
-    echo "NVM не найден, устанавливаем..."
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-    # Загружаем NVM в текущую сессию
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+    echo "NVM не найден или не загрузился корректно, устанавливаем..."
+    wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+    # NVM устанавливается, но не загружается автоматически в текущую *неинтерактивную* оболочку
+    # Поэтому загружаем его явно
+    export NVM_DIR="$HOME/.nvm" # Повторно убеждаемся, что NVM_DIR определен
+    \. "$NVM_DIR/nvm.sh"  # This loads nvm scripts required for the current session
+    # Проверяем, что nvm теперь доступен после установки
+    if ! command -v nvm &> /dev/null; then
+        echo "Критическая ошибка: NVM так и не стал доступен после установки. Проверьте установку NVM вручную."
+        exit 1
+    fi
 else
     echo "NVM уже установлен."
 fi
+
+# Теперь nvm точно должен быть доступен
 nvm install --lts # Установка последней LTS-версии Node.js
 nvm use --lts     # Использование последней LTS-версии
 nvm alias default lts/* # Установка LTS-версии по умолчанию
