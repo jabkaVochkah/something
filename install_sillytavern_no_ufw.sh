@@ -4,7 +4,7 @@
 # Подходит для серверов, где уже ЕСТЬ другой фаервол (например, от скрипта VPN).
 # UFW НЕ АКТИВИРУЕТСЯ И НЕ НАСТРАИВАЕТСЯ ЭТИМ СКРИПТОМ.
 #
-# Использование: sudo bash <(wget -qO- https://raw.githubusercontent.com/jabkaVochkah/something/main/install_sillytavern_no_ufw.sh)
+# Использование: wget -qO- https://raw.githubusercontent.com/jabkaVochkah/something/main/install_sillytavern_no_ufw.sh | sudo bash -s your.subdomain.help
 #
 set -euo pipefail # Выход при ошибке, undef var, failure in pipe
 export LC_ALL=C
